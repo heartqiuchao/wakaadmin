@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<sec:http pattern="/assets/**" security="none" />
+	<sec:http pattern="/bootstrap/**" security="none" />
+	<sec:http pattern="/plugins/**" security="none" />
+	<sec:http pattern="/login" security="none" />
+
+	<sec:http auto-config="true" authentication-manager-ref="adminAuthenticationManager"
+		entry-point-ref="adminAuthenticationEntryPoint"
+		access-decision-manager-ref="adminAccessDecisionManager">
+		<sec:intercept-url pattern="/**/*" access="PERMISSION_OTHER_DEFAULT" />
+		<sec:intercept-url pattern="/*" access="PERMISSION_OTHER_DEFAULT" />
+		
+		<sec:form-login authentication-success-handler-ref="adminAuthenticationSuccessHandler"
+			authentication-failure-handler-ref="adminAuthenticationFailureHandler"
+			login-processing-url="/checkLogin" />
+	</sec:http>
+
+	<sec:authentication-manager alias="adminAuthenticationManager">
+		<sec:authentication-provider user-service-ref="adminUserDetailsService">
+			<sec:password-encoder ref="wakaPasswordEncoder"/>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<bean id="adminAccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter">
+					<property name="rolePrefix" value="PERMISSION_" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="adminAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<constructor-arg value="/login" />
+	</bean>
+
+	<bean id="adminAuthenticationSuccessHandler"
+		class="edu.cqu.wakaadmin.security.WakaAdminAuthenticationSuccessHandler">
+		<property name="defaultTargetUrl" value="/loginSuccess" />
+		<property name="alwaysUseDefaultTargetUrl" value="false" />
+	</bean>
+
+	<bean id="adminAuthenticationFailureHandler"
+		class="edu.cqu.wakaadmin.security.WakaAdminAuthenticationFailureHandler">
+		<constructor-arg value="/login?login_error=true" />
+	</bean>
+
+	<bean id="adminUserDetailsService"
+		class="edu.cqu.wakaadmin.security.service.AdminUserDetailsServiceImpl" />
+</beans>

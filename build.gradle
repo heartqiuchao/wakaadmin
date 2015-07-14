@@ -1,0 +1,42 @@
+apply plugin: 'war'
+apply plugin: 'jetty'
+apply plugin: 'eclipse-wtp'
+
+repositories {
+	mavenCentral()
+}
+
+jettyRun {
+	httpPort = 9080
+	reload = 'automatic'
+	scanIntervalSeconds = 2
+	daemon = false
+}
+
+dependencies {
+	providedCompile "javax.servlet:servlet-api:2.5"
+	providedCompile "javax.servlet.jsp:jsp-api:2.1"
+	compile "org.springframework:spring-web:3.2.13.RELEASE"
+	compile "org.springframework:spring-webmvc:3.2.13.RELEASE"
+	compile "org.springframework:spring-context:3.2.13.RELEASE"
+	compile "org.springframework:spring-context-support:3.2.13.RELEASE"
+	compile "org.springframework:spring-orm:3.2.13.RELEASE"
+	compile "org.springframework.security:spring-security-web:3.2.6.RELEASE"
+	compile "org.springframework.security:spring-security-config:3.2.6.RELEASE"
+	compile "org.hibernate:hibernate-entitymanager:4.3.7.Final"
+	//compile "org.thymeleaf:thymeleaf:2.1.4.RELEASE"
+	//compile "org.thymeleaf:thymeleaf-spring3:2.1.4.RELEASE"
+	compile "org.apache.velocity:velocity:1.7"
+	compile "com.alibaba:druid:1.0.9"
+	compile "org.slf4j:slf4j-log4j12:1.7.5"
+	compile "mysql:mysql-connector-java:5.1.26"
+	compile "org.apache.commons:commons-lang3:3.3.2"
+	compile 'commons-collections:commons-collections:3.2.1'
+	
+    //compile "org.hsqldb:hsqldb:2.3.1"
+	testCompile "junit:junit:4.11"
+}
+
+httpPort = 9080
+stopPort = 9081
+stopKey = 'foo'

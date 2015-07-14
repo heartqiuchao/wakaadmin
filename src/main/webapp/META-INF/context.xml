@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource name="jdbc/storage"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="com.alibaba.druid.pool.DruidDataSourceFactory"
+              
+              maxActive="20"
+              initialSize="1"
+              maxWait="60000"
+              minIdle="1"
+                
+              testWhileIdle="true"
+              testOnBorrow="false"
+              testOnReturn="false"
+              validationQuery="SELECT 1"
+              
+              timeBetweenEvictionRunsMillis="60000"
+              minEvictableIdleTimeMillis="300000"
+              
+              poolPreparedStatements="true"
+              maxOpenPreparedStatements="20"
+            
+              username="${database.user}"
+              password="${database.password}"
+              url="${database.url}"/>
+</Context>

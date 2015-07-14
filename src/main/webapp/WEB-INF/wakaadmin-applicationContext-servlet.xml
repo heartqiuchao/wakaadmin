@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       	http://www.springframework.org/schema/mvc
+       	http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 自动扫描controller包下的所有类，使其认为spring mvc的控制器 -->
+	<context:component-scan base-package="edu.cqu.wakaadmin.security.web" />
+
+	<mvc:resources location="/assets/" mapping="/assets/**" />
+	<mvc:resources location="/bootstrap/" mapping="/bootstrap/**" />
+	<mvc:resources location="/plugins/" mapping="/plugins/**" />
+
+	<!-- <bean id="wakaAdminTemplateResolver" -->
+	<!-- class="org.thymeleaf.templateresolver.ServletContextTemplateResolver"> -->
+	<!-- <property name="prefix" value="/WEB-INF/templates/" /> -->
+	<!-- <property name="suffix" value=".html" /> -->
+	<!-- <property name="templateMode" value="HTML5" /> -->
+	<!-- <property name="characterEncoding" value="UTF-8" /> -->
+	<!-- </bean> -->
+
+	<!-- <bean id="wakaAdminWebTemplateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine"> -->
+	<!-- <property name="templateResolver" ref="wakaAdminTemplateResolver" /> -->
+	<!-- </bean> -->
+
+	<!-- <bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver"> -->
+	<!-- <property name="templateEngine" ref="wakaAdminWebTemplateEngine" /> -->
+	<!-- <property name="order" value="1" /> -->
+	<!-- </bean> -->
+
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/WEB-INF/templates/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">utf-8</prop>
+				<prop key="output.encoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html;charset=utf-8"/> 
+	</bean>
+
+	<mvc:annotation-driven />
+</beans>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WAKA|User-Update</title>
+</head>
+<body>
+<div align="center">
+	<form action="UpdateUser" method="post">
+		<input type="text" name="edit_account" placeholder="输入要编辑的账号"/>
+		<input type="text" name="edit_username" placeholder="新用户名" />
+		<input type="submit" value="修改">
+	</form>
+	<form action="updatePassword" method="post">
+		<input type="text" name="edit_account" placeholder="输入要编辑的账号"/>
+		<input type="password" name="old_password" placeHolder="当前密码"/>
+		<input type="password" name="new_password" placeHolder="新密码"/>
+		<input type="password" name="confirm_password" placeHolder="确认密码"/>
+	<input type="submit" value="更改">
+	</form>
+</div>
+</body>
+</html>

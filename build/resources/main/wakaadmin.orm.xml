@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+
+<!-- ==================  AdminUser ============================= -->
+	<named-query name="READ_ADMIN_USER_BY_ACCOUNT" >
+        <query>
+        	SELECT user 
+        	FROM AdminUser user
+            WHERE user.account = :account
+        </query>
+    </named-query>
+
+    <named-query name="READ_ALL_ADMIN_USERS">
+        <query>
+        	SELECT user 
+        	FROM AdminUser user
+        </query>
+    </named-query>
+<!-- =========================================================== -->
+
+<!-- ==================  AdminRole ============================= -->
+    <named-query name="READ_ALL_ADMIN_ROLES">
+        <query>
+        	SELECT role 
+        	FROM AdminRole role
+        </query>
+    </named-query>
+<!-- =========================================================== -->
+
+<!-- ==================  AdminPermission ============================= -->
+    <named-query name="READ_ALL_ADMIN_PERMISSIONS">
+        <query>
+        	SELECT perm 
+        	FROM AdminPermission perm
+        </query>
+    </named-query>
+<!-- =========================================================== -->
+    
+<!-- ================== AdminModule ============================= -->
+    <named-query name="READ_ALL_ADMIN_MODULES">
+        <query>
+        	SELECT module 
+        	FROM AdminModule module
+        </query>
+        
+    </named-query>
+<!-- =========================================================== -->
+
+<!-- ================== AdminFunction ============================= -->
+    <named-query name="READ_ALL_ADMIN_FUNCTIONS">
+        <query>
+        	SELECT function 
+        	FROM AdminFunction function
+        </query>
+    </named-query>
+
+    <named-query name="READ_ADMIN_FUNCTION_BY_URI">
+        <query>
+        	SELECT function 
+        	FROM AdminFunction function
+            WHERE function.url = :uri
+        </query>
+    </named-query>
+
+    <named-query name="READ_ADMIN_FUNCTION_BY_KEY">
+        <query>
+        	SELECT function 
+        	FROM AdminFunction function
+            WHERE function.functionKey = :key
+        </query>
+    </named-query>
+    
+        <named-query name="READ_ADMIN_FUNCTION_FOR_ENTITY">
+        <query>
+        	SELECT function 
+        	FROM AdminFunction function 
+        	WHERE function.relateEntity = :entityName
+        </query>
+    </named-query>
+<!-- ============================================================= -->
+
+       <named-query name="COUNT_PERMISSIONS_FOR_USER_BY_TYPE_AND_ENTITY" >
+        <query>SELECT COUNT(adminPermission)
+               FROM AdminPermission adminPermission
+               LEFT OUTER JOIN adminPermission.allChildPermissions childPermission
+               LEFT OUTER JOIN childPermission.restrictedEntities childRestrictedEntity
+               LEFT OUTER JOIN adminPermission.restrictedEntities restrictedEntity
+               LEFT OUTER JOIN adminPermission.allRoles role
+               LEFT OUTER JOIN role.allUsers roleUser
+               WHERE roleUser = :adminUser AND 
+                   (adminPermission.type = :type OR adminPermission.type = 'ALL' OR childPermission.type = :type OR childPermission.type = 'ALL') AND
+                   (restrictedEntity.entityName = :entityName OR childRestrictedEntity.entityName = :entityName)
+        </query>
+    </named-query>
+
+    <named-query name="COUNT_BY_PERMISSION_AND_ENTITY" >
+        <query>SELECT COUNT(adminPermission)
+               FROM AdminPermission adminPermission
+               LEFT OUTER JOIN adminPermission.allChildPermissions childPermission
+               LEFT OUTER JOIN childPermission.restrictedEntities childRestrictedEntity
+               LEFT OUTER JOIN adminPermission.restrictedEntities restrictedEntity
+               WHERE adminPermission.name IN (:permissionNames) AND
+                     (restrictedEntity.entityName = :entityName OR childRestrictedEntity.entityName = :entityName)
+        </query>
+    </named-query>
+
+    <named-query name="COUNT_PERMISSIONS_BY_TYPE_AND_ENTITY" >
+        <query>SELECT COUNT(adminPermission)
+               FROM AdminPermission adminPermission
+               LEFT OUTER JOIN adminPermission.allChildPermissions childPermission
+               LEFT OUTER JOIN childPermission.restrictedEntities childRestrictedEntity
+               JOIN adminPermission.restrictedEntities restrictedEntity
+               WHERE (adminPermission.type = :type OR adminPermission.type = 'ALL' OR
+                     childPermission.type = :type OR childPermission.type = 'ALL') AND
+                     (restrictedEntity.entityName = :entityName OR childRestrictedEntity.entityName = :entityName)
+        </query>
+    </named-query>
+
+</entity-mappings>
